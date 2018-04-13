@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request
+from string import search_train
 
 app = Flask(__name__)
+
 
 @app.route('/keyboard')
 def keyboard():
@@ -12,7 +14,7 @@ def keyboard():
 def message():
     received_data = request.get_json()
     content = received_data['content']
-    string = content
+    string = search_train(content)
     button_list = ["열번 조회"]
     json_data = {'message': {'text': string}, 'keyboard': {'type': 'buttons', 'buttons': button_list}}
     return jsonify(json_data)
