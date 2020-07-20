@@ -46,8 +46,7 @@ def crawling_lib():
         percent = soup.findAll("span", {"ng-bind": "s.rate + '%'"})
         for x in range(len(name)):
             db_doc = db.document('ERICA').collection('library_list').document(name[x].text)
-            db_doc.set({
-                'total': int(total[x].text),
+            db_doc.update({
                 'active': int(active[x].text),
                 'occupied': percent[x].text,
                 'time' : now
@@ -69,8 +68,7 @@ def crawling_lib():
         percent = soup.findAll("span", {"ng-bind": "s.rate + '%'"})
         for x in range(len(name)):
             db_doc = db.document('Seoul').collection('library_list').document(name[x].text.split("[")[0])
-            db_doc.set({
-                'total': int(total[x].text),
+            db_doc.update({
                 'active': int(active[x].text),
                 'occupied': percent[x].text,
                 'time' : now
