@@ -22,7 +22,7 @@ def crawling_lib():
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--no-sandbox")
-        driver = webdriver.Chrome(executable_path=os.environ.get("/home/Jeongin/chromedriver"), chrome_options=chrome_options)
+        driver = webdriver.Chrome("/home/Jeongin/chromedriver", options=chrome_options)
     
     # Postgresql setup
     conn_sql = "host='" + os.getenv("dbhost") + "' dbname=" + os.getenv("dbname") + " user='" + os.getenv("dbuser") + "' password='" + os.getenv("dbpassword") + "'"
