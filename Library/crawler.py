@@ -5,8 +5,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-# For postgresql query
-import psycopg2
 # For google firestore query
 from firebase_admin import credentials, firestore, initialize_app
 #For json dump
@@ -23,11 +21,6 @@ def crawling_lib():
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--no-sandbox")
         driver = webdriver.Chrome("/home/Jeongin/chromedriver", options=chrome_options)
-    
-    # Postgresql setup
-    conn_sql = "host='" + os.getenv("dbhost") + "' dbname=" + os.getenv("dbname") + " user='" + os.getenv("dbuser") + "' password='" + os.getenv("dbpassword") + "'"
-    conn = psycopg2.connect(conn_sql)
-    cursor = conn.cursor()
 
     # Google Firestore setup
     # Change cert path by your env
