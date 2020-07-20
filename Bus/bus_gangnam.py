@@ -1,4 +1,4 @@
-import requests, lxml, time, sqlite3
+import requests, lxml, time
 from bs4 import BeautifulSoup
 from datetime import datetime
 
@@ -21,8 +21,6 @@ plateNo_3102_seoul = ''
 plateNo_3102_ansan = ''
 def main():
     global plateNo_3100, plateNo_3101, plateNo_3102, plateNo_3102_seoul, plateNo_3102_ansan
-    conn = sqlite3.connect('bus_gangnam.db')
-    cur = conn.cursor()
     while True:
         # 현재시간 확인
         now = datetime.now()
@@ -42,9 +40,7 @@ def main():
         if arrival_result:
             if plateNo_3102 == '' or plateNo_3102 != plateno:
                 if plateNo_3102 != '':
-                    sql = 'insert into bus (route, plateno, destination, starthour, startmin) values (?,?,?,?,?)'
-                    cur.execute(sql, ('3102', plateno, "강남역", now.hour, now.minute,))
-                    conn.commit()
+                    pass
                 plateNo_3102 = plateno
             else:
                 pass
@@ -64,22 +60,6 @@ def main():
             print("도착 예정 X")
         if arrival_result:
             if plateNo_3102_seoul == '' or plateNo_3102_seoul != plateno:
-                if plateNo_3102_seoul != '':
-                    sql = 'select from bus where plateno = ?'
-                    cur.execute(sql, (plateno,))
-                    if cur.fetchall():
-                        result = cur.fetchall()[0]
-                        time1 = (now.hour - result[3]) * 60 + now.minute - result[4]
-                        sql = 'insert into trace (route, destination, starthour, startmin, startday, totalhour, totalmin) values (?,?,?,?,?)'
-                        cur.execute(sql, (result[0], result[2], result[3], result[4], now.weekday(), 0, time1,))
-                        sql = 'delete from bus where plateno = ?'
-                        cur.execute(sql, (plateno,))
-                        conn.commit()
-                    sql = 'insert into bus (route, plateno, destination, starthour, startmin) values (?,?,?,?,?)'
-                    cur.execute(sql, ('3102', plateno, "안산", now.hour, now.minute,))
-                    conn.commit()
-                plateNo_3102_seoul = plateno
-            else:
                 pass
         else:
             pass
@@ -98,16 +78,7 @@ def main():
         if arrival_result:
             if plateNo_3102_ansan == '' or plateNo_3102_ansan != plateno:
                 if plateNo_3102_ansan != '':
-                    sql = 'select from bus where plateno = ?'
-                    cur.execute(sql, (plateno,))
-                    if cur.fetchall():
-                        result = cur.fetchall()[0]
-                        time1 = (now.hour - result[3]) * 60 + now.minute - result[4]
-                        sql = 'insert into trace (route, destination, starthour, startmin, startday, totalhour, totalmin) values (?,?,?,?,?)'
-                        cur.execute(sql, (result[0], result[2], result[3], result[4], now.weekday(), 0, time1,))
-                        sql = 'delete from bus where plateno = ?'
-                        cur.execute(sql, (plateno,))
-                        conn.commit()
+                    pass
                 plateNo_3102_ansan = plateno
             else:
                 pass
