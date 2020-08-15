@@ -13,21 +13,18 @@ import json
 def crawling_lib():
     # Env for web reqeust
     chrome_options = webdriver.ChromeOptions()
-    try:
-        # chrome_options.binary_location = "/usr/bin/brave-browser"
-        driver = webdriver.Chrome('C:\\Users\\Jeongin\\Desktop\\chromedriver.exe', options=chrome_options)
-    except:
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument("--no-sandbox")
-        driver = webdriver.Chrome("/home/jil8885/chromedriver", options=chrome_options)
+    # chrome_options.binary_location = "/usr/bin/brave-browser"
+    # driver = webdriver.Chrome('C:\\Users\\Jeongin\\Desktop\\chromedriver.exe', options=chrome_options)
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-sandbox")
+    driver = webdriver.Chrome("/home/jil8885/chromedriver", options=chrome_options)
 
     # Google Firestore setup
     # Change cert path by your env
-    try:
-        cred = credentials.Certificate('C:\\Users\\Jeongin\\Downloads\\personal-sideprojects-c013420f3313.json')
-    except:
-        cred = credentials.Certificate('/home/jil8885/google-firebase.json')
+    # try:
+    #     cred = credentials.Certificate('C:\\Users\\Jeongin\\Downloads\\personal-sideprojects-c013420f3313.json')
+    cred = credentials.Certificate('/home/jil8885/google-firebase.json')
     initialize_app(cred)
     db_client = firestore.client()
     db = db_client.collection("libinfo")
