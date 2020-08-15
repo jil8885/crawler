@@ -15,19 +15,19 @@ def crawling_lib():
     chrome_options = webdriver.ChromeOptions()
     try:
         # chrome_options.binary_location = "/usr/bin/brave-browser"
-        driver = webdriver.Chrome('C:\\Users\\Jeongin\\Desktop\\chromedriver', options=chrome_options)
+        driver = webdriver.Chrome('C:\\Users\\Jeongin\\Desktop\\chromedriver.exe', options=chrome_options)
     except:
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--no-sandbox")
-        driver = webdriver.Chrome("/home/Jeongin/chromedriver", options=chrome_options)
+        driver = webdriver.Chrome("/home/jil8885/chromedriver", options=chrome_options)
 
     # Google Firestore setup
     # Change cert path by your env
     try:
-        cred = credentials.Certificate('C:\\Users\\Jeongin\\Downloads\\personal-sideprojects-3e0ca032c482.json')
+        cred = credentials.Certificate('C:\\Users\\Jeongin\\Downloads\\personal-sideprojects-c013420f3313.json')
     except:
-        cred = credentials.Certificate('/home/Jeongin/google-firebase.json')
+        cred = credentials.Certificate('/home/jil8885/google-firebase.json')
     initialize_app(cred)
     db_client = firestore.client()
     db = db_client.collection("libinfo")
@@ -45,12 +45,27 @@ def crawling_lib():
         active = soup.findAll("span", {"ng-bind": "s.occupied"})
         percent = soup.findAll("span", {"ng-bind": "s.rate + '%'"})
         for x in range(len(name)):
-            db_doc = db.document('ERICA').collection('library_list').document(name[x].text)
-            db_doc.update({
-                'active': int(active[x].text),
-                'occupied': percent[x].text,
-                'time' : now
-            })
+            try:
+                if "(" not in name[x].text:
+                    db_doc = db.document('ERICA').collection('library_list').document(name[x].text)
+                else:
+                    db_doc = db.document('ERICA').collection('library_list').document(name[x].text.split("(")[0])
+                db_doc.update({
+                    'active': int(active[x].text),
+                    'occupied': percent[x].text,
+                    'time' : now
+                })
+            except:
+                if "(" not in name[x].text:
+                    db_doc = db.document('ERICA').collection('library_list').document(name[x].text)
+                else:
+                    db_doc = db.document('ERICA').collection('library_list').document(name[x].text.split("(")[0])
+                db_doc.set({
+                    'total' : int(total[x].text),
+                    'active': int(active[x].text),
+                    'occupied': percent[x].text,
+                    'time' : now
+                })                
     finally:
         # driver.close()
         pass
@@ -69,6 +84,7 @@ def crawling_lib():
         for x in range(len(name)):
             db_doc = db.document('Seoul').collection('library_list').document(name[x].text.split("[")[0])
             db_doc.update({
+                'total' : int(total[x].text),
                 'active': int(active[x].text),
                 'occupied': percent[x].text,
                 'time' : now
