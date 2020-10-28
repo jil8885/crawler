@@ -7,7 +7,7 @@ def main():
     print(search(stn_name))
 
 
-def dest(destination, total_cnt):
+def dest(total_cnt) -> bool:
     global dest_list
     cnt = 0
     for x in dest_list:
@@ -18,8 +18,7 @@ def dest(destination, total_cnt):
 # 역별로 이름 받아서 찾아주는 함수
 def search(name):
     global dest_list
-    link = 'http://swopenapi.seoul.go.kr/api/subway/sample/json/realtimeStationArrival/0/5/'
-    link += name
+    link = f'http://swopenapi.seoul.go.kr/api/subway/sample/json/realtimeStationArrival/0/5/{name}'
     # 역명을 주소 뒤에 이어서 서버에 요청 보냄
     response = requests.get(link)
     try:
